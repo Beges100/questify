@@ -2,7 +2,6 @@ package ru.writebot.myapp.handlers.screens.inline;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.writebot.myapp.handlers.ScreenHandler;
 
 public interface InlineScreenHandler {
 

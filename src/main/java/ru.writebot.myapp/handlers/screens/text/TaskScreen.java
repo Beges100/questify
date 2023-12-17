@@ -11,6 +11,7 @@ import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.screens.Screen;
 import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.UserServices;
+import ru.writebot.myapp.utils.StringForScreenTextResponseCreate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,23 +32,15 @@ public class TaskScreen implements ScreenHandler {
         User userById = userServices.getUserById(update.getMessage().getChatId());
         StringBuilder sb = new StringBuilder();
 
-        userById.getCurrentTasks().forEach(a -> sb.append(a.toStringForOneTask()));
-        String s = userById.getCurrentTasks().isEmpty() ? "Нет активных заданий" :
+        userById.getCurrentTasks().forEach(a -> sb.append("\n✉" + a.getName() + "\n"));
+
+//        userById.getCurrentTasks().forEach(a -> sb.append("\n" + a.toStringForOneTask() + "\n"));
+        String taskFromUser = userById.getCurrentTasks().isEmpty() ? "Нет активных заданий" :
                 sb.toString();
-        String mainScreenText = String.format(""" 
-                Активные задания:
-                %s
-             
-                Последние 3 выполненых задания:
-                %s
-                """,
-                s,
-                "Пока не реализовано"
-        );
 
         // Создаем экран
         Screen mainScreen = Screen.builder()
-                .textOnScreen(mainScreenText)
+                .textOnScreen(StringForScreenTextResponseCreate.createTextForTaskScreen(taskFromUser))
                 .keyboard(
                         serviceButton.createKeyboard(
                                 Map.of(

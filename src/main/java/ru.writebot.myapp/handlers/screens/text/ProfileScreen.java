@@ -10,6 +10,7 @@ import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.screens.Screen;
 import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.UserServices;
+import ru.writebot.myapp.utils.StringForScreenTextResponseCreate;
 
 import java.util.List;
 import java.util.Map;
@@ -30,44 +31,9 @@ public class ProfileScreen implements ScreenHandler {
     public void handle(Update update, SendMessage response) {
         User user = userServices.getUserById(update.getMessage().getChatId());
 
-        String mainScreenText = String.format("""
-                👤Questify: Профиль %s \n
-                
-                🏆 Уровень: %d
-                💡 Опыт: %d
-                🏅 Достижения: %d
-                📌 Монеты: %d
-                                                                               
-                📊 Статистика:
-                  - Заданий выполнено: %d
-                  - Друзей в игре: 0
-                  - Бонус опыта: +20%%
-                         
-                🦾 Личные качества:
-                    - Уровень дружелюбия: %d
-                    - Уровень доброты: %d
-                    - Уровень общительности: %d   
-                    - Уровень открытости к новому: %d 
-                                                                               
-                👉 [Изменить Профиль]
-                                                                               
-                👥 Вызовите друга на выполнение задания и получите +20%% опыта!""",
-                user.getFirstName(),
-                user.getLevel(),
-                user.getExperience(),
-                user.getAchievements(),
-                user.getCoins(),
-                user.getCompletedTasks(),
-                user.getPersonalQualities().getFriendlinessLevel(),
-                user.getPersonalQualities().getKindnessLevel(),
-                user.getPersonalQualities().getSociabilityLevel(),
-                user.getPersonalQualities().getOpennessLevel()
-                //user.getFriends().size()
-        );
-
         // Создаем экран
         Screen mainScreen = Screen.builder()
-                .textOnScreen(mainScreenText)
+                .textOnScreen(StringForScreenTextResponseCreate.createTextForProfileScreen(user))
                 .keyboard(
                         serviceButton.createKeyboard(
                                 Map.of(

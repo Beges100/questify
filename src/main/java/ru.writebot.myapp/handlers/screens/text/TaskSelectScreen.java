@@ -60,40 +60,5 @@ public class TaskSelectScreen implements ScreenHandler {
                 "3 Прочитайте 10 страниц в книге");
 
         response.setReplyMarkup(inlineKeyboardMarkup);
-
-/*
-        Task taskById1 = taskServices.getTaskById(2L);
-        Task taskById2 = taskServices.getTaskById(3L);
-        Task taskById3 = taskServices.getTaskById(4L);
-
-        String mainScreenText = String.format("""
-                Выберите одно из трех заданий по ID:
-                %d. %s
-                %d. %s
-                %d. %s
-
-                """,
-                taskById1.getId(), taskById1.getName(),
-                taskById2.getId(), taskById2.getName(),
-                taskById3.getId(), taskById3.getName());
-
-        // Создаем экран
-        Screen mainScreen = Screen.builder()
-                .textOnScreen(mainScreenText)
-                .keyboard(
-                        serviceButton.createKeyboard(
-                                Map.of(
-                                        1, List.of("🔍Главная"),
-                                        2, List.of("Выбрать " + taskById1.getId().toString(), "Выбрать " + taskById2.getId().toString()),
-                                        3, List.of("Выбрать " + taskById3.getId().toString())
-                                )
-                        )
-                )
-                .build();
-
-        // Устанавливаем экран в ответное сообщение
-        response.setText(mainScreen.getTextOnScreen());
-        response.setReplyMarkup(new ReplyKeyboardMarkup(mainScreen.getKeyboard())); // Установите клавиатуру
-*/
     }
 }

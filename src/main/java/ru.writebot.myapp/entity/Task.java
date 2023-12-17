@@ -34,12 +34,12 @@ public class Task {
 
     public String toStringForOneTask() {
         return String.format("""
-                Название: %s
-                Описание: %s
-                Монет за задание: %s
-                Опыт за задание: %s
-                Категория: %s
-                Сложность: %s
+                ✉Название: %s
+                📝Описание: %s
+                🪙Монет за задание: %s
+                📈Опыт за задание: %s
+                📂Категория: %s
+                🔐Сложность: %s
                 """,
                 getName(),
                 getDescription(),
@@ -48,7 +48,5 @@ public class Task {
                 getCategory().getDisplayName(),
                 getTaskLvl().getDisplayName()
         );
-
-
     }
 }

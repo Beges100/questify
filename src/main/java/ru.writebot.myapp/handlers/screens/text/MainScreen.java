@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.screens.Screen;
 import ru.writebot.myapp.service.ServiceButton;
+import ru.writebot.myapp.utils.StringForScreenTextResponseCreate;
 
 import java.util.List;
 import java.util.Map;
@@ -26,21 +27,9 @@ public class MainScreen implements ScreenHandler {
 
     @Override
     public void handle(Update update, SendMessage response) {
-        String mainScreenText = String.format(""" 
-                НА ДАННЫЙ МОМЕНТ БОТ НАХОДИТСЯ НА СТАДИИ РАЗРАБОТКИ
-                По предложениям и багам писать @beges56
-                
-                🔍 Главное меню\n
-                👤 Профиль %s\n
-                📊 Уровень: %d\n
-                💡 Опыт: %d/500\n
-                🏆 Достижения: %d\n
-                📌 Баланс Монет: %d\n
-                👥 Вызовите друга на выполнение задания и получите +20%% опыта!""", update.getMessage().getFrom().getFirstName(), 5, 15, 12, 200);
-
         // Создаем экран
         Screen mainScreen = Screen.builder()
-                .textOnScreen(mainScreenText)
+                .textOnScreen(StringForScreenTextResponseCreate.createTextForMainScreen(update))
                 .keyboard(
                         serviceButton.createKeyboard(
                                 Map.of(

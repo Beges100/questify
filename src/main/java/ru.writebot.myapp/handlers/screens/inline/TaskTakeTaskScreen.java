@@ -16,6 +16,9 @@ import ru.writebot.myapp.service.UserServices;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Экран выбора задания
+ **/
 @Component
 @RequiredArgsConstructor
 public class TaskTakeTaskScreen implements InlineScreenHandler {
