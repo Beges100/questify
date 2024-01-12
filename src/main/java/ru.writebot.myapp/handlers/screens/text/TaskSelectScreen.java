@@ -5,17 +5,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.writebot.myapp.entity.Task;
 import ru.writebot.myapp.handlers.ScreenHandler;
-import ru.writebot.myapp.screens.Screen;
 import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.TaskServices;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -28,21 +25,24 @@ public class TaskSelectScreen implements ScreenHandler {
         return update.hasMessage() && "Выбрать задание".equals(update.getMessage().getText());
     }
 
+    //TODO рефаторинг, сделать SingleResponsibility
     @Override
     public void handle(Update update, SendMessage response) {
-
+        StringBuilder sb = new StringBuilder();
+        List<Task> threeRandomTasks = taskServices.getThreeRandomTasks();
+        threeRandomTasks.forEach(task -> sb.append(task.toStringNameForOneTask()).append("\n"));
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
+        //TODO рефакторинг, убрать костыльный сетт кнопок во избежании NPE или index out of bound exception
+        InlineKeyboardButton task1 = new InlineKeyboardButton(threeRandomTasks.get(0).getCategory().getIcon());
+        task1.setCallbackData("task_" + threeRandomTasks.get(0).getId());
 
-        InlineKeyboardButton task1 = new InlineKeyboardButton("1");
-        task1.setCallbackData("task_" + 1);
+        InlineKeyboardButton task2 = new InlineKeyboardButton(threeRandomTasks.get(1).getCategory().getIcon());
+        task2.setCallbackData("task_" + threeRandomTasks.get(1).getId());
 
-        InlineKeyboardButton task2 = new InlineKeyboardButton("2");
-        task2.setCallbackData("task_2");
-
-        InlineKeyboardButton task3 = new InlineKeyboardButton("3");
-        task3.setCallbackData("task_3");
+        InlineKeyboardButton task3 = new InlineKeyboardButton(threeRandomTasks.get(2).getCategory().getIcon());
+        task3.setCallbackData("task_" + threeRandomTasks.get(2).getId());
 
         row.add(task1);
         row.add(task2);
@@ -54,46 +54,8 @@ public class TaskSelectScreen implements ScreenHandler {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
 
-        response.setText("Выберите одно из трех заданий по ID:\n" +
-                "1 Попробуйте новый вид искусства \n" +
-                "2 Прогуляйтесь 5 км\n" +
-                "3 Прочитайте 10 страниц в книге");
+        response.setText("Выберите одно из трех заданий:\n" + sb);
 
         response.setReplyMarkup(inlineKeyboardMarkup);
-
-/*
-        Task taskById1 = taskServices.getTaskById(2L);
-        Task taskById2 = taskServices.getTaskById(3L);
-        Task taskById3 = taskServices.getTaskById(4L);
-
-        String mainScreenText = String.format("""
-                Выберите одно из трех заданий по ID:
-                %d. %s
-                %d. %s
-                %d. %s
-
-                """,
-                taskById1.getId(), taskById1.getName(),
-                taskById2.getId(), taskById2.getName(),
-                taskById3.getId(), taskById3.getName());
-
-        // Создаем экран
-        Screen mainScreen = Screen.builder()
-                .textOnScreen(mainScreenText)
-                .keyboard(
-                        serviceButton.createKeyboard(
-                                Map.of(
-                                        1, List.of("🔍Главная"),
-                                        2, List.of("Выбрать " + taskById1.getId().toString(), "Выбрать " + taskById2.getId().toString()),
-                                        3, List.of("Выбрать " + taskById3.getId().toString())
-                                )
-                        )
-                )
-                .build();
-
-        // Устанавливаем экран в ответное сообщение
-        response.setText(mainScreen.getTextOnScreen());
-        response.setReplyMarkup(new ReplyKeyboardMarkup(mainScreen.getKeyboard())); // Установите клавиатуру
-*/
     }
 }

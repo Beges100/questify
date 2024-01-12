@@ -13,6 +13,7 @@ import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.UserServices;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class RegisterScreen implements ScreenHandler {
             user.setExperience(0);
             PersonalQualities qualities = new PersonalQualities();
             user.setPersonalQualities(qualities);
-            user.setFriends(new ArrayList<>());
+            user.setFriends(new HashSet<>());
             user.setId(update.getMessage().getChatId());
             user.setFirstName(update.getMessage().getFrom().getFirstName());
             userServices.saveUser(user);

@@ -28,7 +28,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id")
     )
-    private List<Task> currentTasks = new ArrayList<>();
+    private Set<Task> currentTasks = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -36,7 +36,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id")
     )
-    private List<Achievement> achievements = new ArrayList<>();
+    private Set<Achievement> achievements = new HashSet<>();
 
     /**
      * Список друзей пользователя
@@ -47,7 +47,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    private List<User> friends = new ArrayList<>();
+    private Set<User> friends = new HashSet<>();
 
     /**
      * Персональные качества пользователя (Общительность, дружелюбие и тд)
