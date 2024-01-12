@@ -49,4 +49,8 @@ public class Task {
                 getTaskLvl().getDisplayName()
         );
     }
+
+    public String toStringNameForOneTask() {
+        return category.getIcon() + " " + name;
+    }
 }

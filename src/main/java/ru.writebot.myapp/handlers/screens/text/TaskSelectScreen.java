@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import ru.writebot.myapp.entity.Task;
 import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.TaskServices;
@@ -24,21 +25,24 @@ public class TaskSelectScreen implements ScreenHandler {
         return update.hasMessage() && "Выбрать задание".equals(update.getMessage().getText());
     }
 
+    //TODO рефаторинг, сделать SingleResponsibility
     @Override
     public void handle(Update update, SendMessage response) {
-
+        StringBuilder sb = new StringBuilder();
+        List<Task> threeRandomTasks = taskServices.getThreeRandomTasks();
+        threeRandomTasks.forEach(task -> sb.append(task.toStringNameForOneTask()).append("\n"));
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
+        //TODO рефакторинг, убрать костыльный сетт кнопок во избежании NPE или index out of bound exception
+        InlineKeyboardButton task1 = new InlineKeyboardButton(threeRandomTasks.get(0).getCategory().getIcon());
+        task1.setCallbackData("task_" + threeRandomTasks.get(0).getId());
 
-        InlineKeyboardButton task1 = new InlineKeyboardButton("1");
-        task1.setCallbackData("task_" + 1);
+        InlineKeyboardButton task2 = new InlineKeyboardButton(threeRandomTasks.get(1).getCategory().getIcon());
+        task2.setCallbackData("task_" + threeRandomTasks.get(1).getId());
 
-        InlineKeyboardButton task2 = new InlineKeyboardButton("2");
-        task2.setCallbackData("task_2");
-
-        InlineKeyboardButton task3 = new InlineKeyboardButton("3");
-        task3.setCallbackData("task_3");
+        InlineKeyboardButton task3 = new InlineKeyboardButton(threeRandomTasks.get(2).getCategory().getIcon());
+        task3.setCallbackData("task_" + threeRandomTasks.get(2).getId());
 
         row.add(task1);
         row.add(task2);
@@ -50,10 +54,7 @@ public class TaskSelectScreen implements ScreenHandler {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
 
-        response.setText("Выберите одно из трех заданий по ID:\n" +
-                "1 Попробуйте новый вид искусства \n" +
-                "2 Прогуляйтесь 5 км\n" +
-                "3 Прочитайте 10 страниц в книге");
+        response.setText("Выберите одно из трех заданий:\n" + sb);
 
         response.setReplyMarkup(inlineKeyboardMarkup);
     }
