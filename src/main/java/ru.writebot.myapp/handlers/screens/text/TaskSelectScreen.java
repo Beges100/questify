@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.writebot.myapp.entity.Task;
 import ru.writebot.myapp.handlers.ScreenHandler;
-import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.TaskServices;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class TaskSelectScreen implements ScreenHandler {
-    private final ServiceButton serviceButton;
     private final TaskServices taskServices;
 
     @Override
@@ -34,23 +32,16 @@ public class TaskSelectScreen implements ScreenHandler {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
-        //TODO рефакторинг, убрать костыльный сетт кнопок во избежании NPE или index out of bound exception
-        InlineKeyboardButton task1 = new InlineKeyboardButton(threeRandomTasks.get(0).getCategory().getIcon());
-        task1.setCallbackData("task_" + threeRandomTasks.get(0).getId());
 
-        InlineKeyboardButton task2 = new InlineKeyboardButton(threeRandomTasks.get(1).getCategory().getIcon());
-        task2.setCallbackData("task_" + threeRandomTasks.get(1).getId());
-
-        InlineKeyboardButton task3 = new InlineKeyboardButton(threeRandomTasks.get(2).getCategory().getIcon());
-        task3.setCallbackData("task_" + threeRandomTasks.get(2).getId());
-
-        row.add(task1);
-        row.add(task2);
-        row.add(task3);
+        threeRandomTasks.forEach(task -> {
+            InlineKeyboardButton taskButton = new InlineKeyboardButton(threeRandomTasks.get(0).getCategory().getIcon());
+            taskButton.setCallbackData("task_" + threeRandomTasks.get(0).getId());
+            row.add(taskButton);
+        });
 
         keyboard.add(row);
 
-// Создаем объект ReplyKeyboardMarkup для инлайн-клавиатуры
+        // Создаем объект ReplyKeyboardMarkup для инлайн-клавиатуры
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(keyboard);
 
@@ -58,4 +49,6 @@ public class TaskSelectScreen implements ScreenHandler {
 
         response.setReplyMarkup(inlineKeyboardMarkup);
     }
+
+
 }
