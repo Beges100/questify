@@ -2,6 +2,8 @@ package ru.writebot.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,6 +16,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class UpdateController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateController.class);
 
     private InitBot initBot;
     private final List<ScreenHandler> messageHandlers;
@@ -47,7 +51,7 @@ public class UpdateController {
         }
 
         setView(sendMessage);
-        System.out.printf("Пользователь с ID: %s", update.getCallbackQuery().getData());
+        LOGGER.info(String.format("Пользователь с ID: %s, написал в чат: %s%n", update.getMessage().getChatId().toString(), update.getMessage().getText()));
     }
 
     /**
@@ -70,7 +74,7 @@ public class UpdateController {
         }
 //6129730549 второй акк
         setView(sendMessage);
-        System.out.printf("Пользователь с ID: %s, написал в чат: %s%n", update.getMessage().getChatId().toString(), update.getMessage().getText());
+        LOGGER.info(String.format("Пользователь с ID: %s, написал в чат: %s%n", update.getMessage().getChatId().toString(), update.getMessage().getText()));
     }
 
     public void setView(SendMessage sendMessage) {

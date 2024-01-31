@@ -34,7 +34,6 @@ public class TaskScreen implements ScreenHandler {
 
         userById.getCurrentTasks().forEach(a -> sb.append("\n" + a.getCategory().getIcon() + a.getName() + "\n"));
 
-//        userById.getCurrentTasks().forEach(a -> sb.append("\n" + a.toStringForOneTask() + "\n"));
         String taskFromUser = userById.getCurrentTasks().isEmpty() ? "Нет активных заданий" :
                 sb.toString();
 
