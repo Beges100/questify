@@ -1,12 +1,15 @@
 package ru.writebot.myapp.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "verification_task")
 @NoArgsConstructor
 public class VerificationTask {
@@ -38,5 +41,18 @@ public class VerificationTask {
         this.taskId = taskId;
         this.material = material;
         this.isVerified = false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VerificationTask that = (VerificationTask) o;
+        return isVerified == that.isVerified && Objects.equals(id, that.id) && Objects.equals(senderId, that.senderId) && Objects.equals(verifierId, that.verifierId) && Objects.equals(taskId, that.taskId) && Objects.equals(material, that.material);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, senderId, verifierId, taskId, material, isVerified);
     }
 }

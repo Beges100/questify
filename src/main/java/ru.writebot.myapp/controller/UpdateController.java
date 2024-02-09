@@ -43,12 +43,10 @@ public class UpdateController {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
 
-        for (InlineScreenHandler handler : inlineScreenHandlers) {
-            if (handler.canHandle(update)) {
-                handler.handle(update, sendMessage);
-                break; // Останавливаем цикл, так как сообщение обработано
-            }
-        }
+        inlineScreenHandlers.stream()
+                .filter(handler -> handler.canHandle(update))
+                .findFirst()
+                .ifPresent(handler -> handler.handle(update, sendMessage));
 
         setView(sendMessage);
         LOGGER.info(String.format("Пользователь с ID: %s, написал в чат: %s%n", update.getMessage().getChatId().toString(), update.getMessage().getText()));
@@ -62,17 +60,16 @@ public class UpdateController {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(update.getMessage().getChatId().toString());
 
-        for (ScreenHandler handler : messageHandlers) {
-            if (handler.canHandle(update)) {
-                handler.handle(update, sendMessage);
-                break; // Останавливаем цикл, так как сообщение обработано
-            }
-        }
+        messageHandlers.stream()
+                .filter(handler -> handler.canHandle(update))
+                .findFirst()
+                .ifPresent(handler -> handler.handle(update, sendMessage));
+
         if (sendMessage.getText() == null) {
             sendMessage.setChatId(update.getMessage().getChatId());
             sendMessage.setText("Раздел в разработке");
         }
-//6129730549 второй акк
+
         setView(sendMessage);
         LOGGER.info(String.format("Пользователь с ID: %s, написал в чат: %s%n", update.getMessage().getChatId().toString(), update.getMessage().getText()));
     }

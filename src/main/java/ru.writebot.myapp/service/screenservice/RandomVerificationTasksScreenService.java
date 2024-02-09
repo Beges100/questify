@@ -11,6 +11,7 @@ import ru.writebot.myapp.utils.ScreenButtonsType;
 import ru.writebot.myapp.utils.ScreenUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,13 +21,15 @@ public class RandomVerificationTasksScreenService {
     private final TaskRepository taskRepository;
     private final ScreenUtils screenUtils;
 
+    /**
+     * Получение экрана со случайными заданиями на проверке
+     */
     public Screen getRandomVerificationTasksScreen() {
         List<VerificationTask> verificationTasks = verificationTaskRepository.findRandomVerificationTasks();
 
         String tasksOnVerification = verificationTasks.stream()
-                .map(verificationTask -> taskRepository.findById(verificationTask.getTaskId())
-                        .map(Task::toStringNameForOneTask)
-                        .orElse(""))
+                .map(this::getTaskNameForVerificationTask)
+                .filter(Objects::nonNull)
                 .collect(Collectors.joining("\n"));
 
         String screenText = "Случайные задания на проверке:\n" + (tasksOnVerification.isEmpty() ? "Нет заданий на проверке" : tasksOnVerification);
@@ -35,5 +38,14 @@ public class RandomVerificationTasksScreenService {
                 screenText,
                 ScreenButtonsType.RANDOM_VERIFICATION_SCREEN.getTypeScreenButtons()
         );
+    }
+
+    /**
+     * Получение имени задания для задания на проверке
+     */
+    private String getTaskNameForVerificationTask(VerificationTask verificationTask) {
+        Long taskId = verificationTask.getTaskId();
+        Task task = taskRepository.findById(taskId).orElse(null);
+        return (task != null) ? task.toStringNameForOneTask() : null;
     }
 }

@@ -1,13 +1,16 @@
 package ru.writebot.myapp.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "\"user\"")
 @NoArgsConstructor
 public class User {
@@ -80,5 +83,18 @@ public class User {
         for (TaskCategory category : TaskCategory.values()) {
             categoryLevels.put(category, 1); // Начальный уровень для каждой категории
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(level, user.level) && Objects.equals(experience, user.experience) && Objects.equals(coins, user.coins) && Objects.equals(currentTasks, user.currentTasks) && Objects.equals(achievements, user.achievements) && Objects.equals(friends, user.friends) && Objects.equals(personalQualities, user.personalQualities) && Objects.equals(completedTasks, user.completedTasks) && Objects.equals(categoryLevels, user.categoryLevels);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, level, experience, coins, currentTasks, achievements, friends, personalQualities, completedTasks, categoryLevels);
     }
 }

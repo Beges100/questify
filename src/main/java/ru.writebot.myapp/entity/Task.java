@@ -1,12 +1,16 @@
 package ru.writebot.myapp.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "task")
 @NoArgsConstructor
 public class Task {
@@ -52,5 +56,18 @@ public class Task {
 
     public String toStringNameForOneTask() {
         return category.getIcon() + " " + name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return experienceReward == task.experienceReward && coinReward == task.coinReward && Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && category == task.category && taskLvl == task.taskLvl;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, experienceReward, coinReward, category, taskLvl);
     }
 }
