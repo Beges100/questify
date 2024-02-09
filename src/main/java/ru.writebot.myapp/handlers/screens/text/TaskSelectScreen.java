@@ -23,7 +23,7 @@ public class TaskSelectScreen implements ScreenHandler {
         return update.hasMessage() && "Выбрать задание".equals(update.getMessage().getText());
     }
 
-    //TODO рефаторинг, сделать SingleResponsibility
+    //TODO рефаторинг, слишком перегруженный метод
     @Override
     public void handle(Update update, SendMessage response) {
         StringBuilder sb = new StringBuilder();

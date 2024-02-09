@@ -11,7 +11,7 @@ import ru.writebot.myapp.repository.UserRepository;
 public class UserServices {
     private final UserRepository userRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }

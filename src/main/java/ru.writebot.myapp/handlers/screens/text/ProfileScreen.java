@@ -8,18 +8,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import ru.writebot.myapp.entity.User;
 import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.screens.Screen;
-import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.service.UserServices;
+import ru.writebot.myapp.utils.ScreenButtonsType;
+import ru.writebot.myapp.utils.ScreenUtils;
 import ru.writebot.myapp.utils.StringForScreenTextResponseCreate;
-
-import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class ProfileScreen implements ScreenHandler {
-    private final ServiceButton serviceButton;
     private final UserServices userServices;
+    private final ScreenUtils screenUtils;
 
     @Override
     public boolean canHandle(Update update) {
@@ -32,18 +30,10 @@ public class ProfileScreen implements ScreenHandler {
         User user = userServices.getUserById(update.getMessage().getChatId());
 
         // Создаем экран
-        Screen mainScreen = Screen.builder()
-                .textOnScreen(StringForScreenTextResponseCreate.createTextForProfileScreen(user))
-                .keyboard(
-                        serviceButton.createKeyboard(
-                                Map.of(
-                                        1, List.of("🔍Главная", "👤Профиль"),
-                                        2, List.of("F.A.Q.(disable)", "О нас"),
-                                        3, List.of("К заданиям")
-                                )
-                        )
-                )
-                .build();
+        Screen mainScreen = screenUtils.createScreenWithButtons(
+                StringForScreenTextResponseCreate.createTextForProfileScreen(user),
+                ScreenButtonsType.SIMPLE.getTypeScreenButtons()
+        );
 
         // Устанавливаем экран в ответное сообщение
         response.setText(mainScreen.getTextOnScreen());
