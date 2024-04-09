@@ -2,13 +2,14 @@ package ru.writebot.myapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.writebot.myapp.config.InitBot;
-import ru.writebot.myapp.handlers.ScreenHandler;
+import ru.writebot.myapp.handlers.screens.text.ScreenHandler;
 import ru.writebot.myapp.handlers.screens.inline.InlineScreenHandler;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public class UpdateController {
                 .findFirst()
                 .ifPresent(handler -> handler.handle(update, sendMessage));
 
-        if (sendMessage.getText() == null) {
+        if (StringUtils.isEmpty(sendMessage.getText())) {
             sendMessage.setChatId(update.getMessage().getChatId());
             sendMessage.setText("Раздел в разработке");
         }

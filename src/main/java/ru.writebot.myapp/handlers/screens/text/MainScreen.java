@@ -5,20 +5,15 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.screens.Screen;
-import ru.writebot.myapp.service.ServiceButton;
 import ru.writebot.myapp.utils.ScreenButtonsType;
 import ru.writebot.myapp.utils.ScreenUtils;
 import ru.writebot.myapp.utils.StringForScreenTextResponseCreate;
 
-import java.util.List;
-import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
 public class MainScreen implements ScreenHandler {
-
+    
     private final ScreenUtils screenUtils;
 
     @Override

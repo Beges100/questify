@@ -1,4 +1,4 @@
-package ru.writebot.myapp.handlers;
+package ru.writebot.myapp.handlers.screens.text;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

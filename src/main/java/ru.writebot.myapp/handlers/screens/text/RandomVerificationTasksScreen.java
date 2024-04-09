@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import ru.writebot.myapp.handlers.ScreenHandler;
 import ru.writebot.myapp.screens.Screen;
 import ru.writebot.myapp.service.screenservice.RandomVerificationTasksScreenService;
 
@@ -16,7 +15,7 @@ public class RandomVerificationTasksScreen implements ScreenHandler {
 
     @Override
     public boolean canHandle(Update update) {
-        return update.hasMessage() && "Случайные задания на проверке".equals(update.getMessage().getText());
+        return update.hasMessage() && "Выбрать задание для проверки".equals(update.getMessage().getText());
     }
 
     @Override
