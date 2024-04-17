@@ -20,7 +20,6 @@ public class RandomVerificationTasksScreenService {
     private final VerificationTaskRepository verificationTaskRepository;
     private final TaskRepository taskRepository;
     private final ScreenUtils screenUtils;
-
     /**
      * Получение экрана со случайными заданиями на проверке
      */
