@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 public class QuestifyMain {
     public static void main(String[] args) {
         SpringApplication.run(QuestifyMain.class);
-        System.out.println("Привет");
+        System.out.println("Привет 2");
     }
 
 }
